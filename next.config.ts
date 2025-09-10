@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/,
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
 });
 
 const nextConfig: NextConfig = {
@@ -9,7 +10,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Github Pages cannot optimize images
   },
-  pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
+  experimental: {
+    mdxRs: false,
+  },
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
 export default withMDX(nextConfig);

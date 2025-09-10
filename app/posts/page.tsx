@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getAllPosts } from "../../lib/posts";
 import Link from "next/link";
 
