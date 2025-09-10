@@ -11,6 +11,6 @@ type Props = { params: { slug: string } };
 
 export default function PostPage({ params }: Props) {
   const { slug } = params;
-  const { content } = getPostBySlug(slug); // Ensure the post exists
+  const { content } = getPostBySlug(slug);
   return <MDXRemote source={content} components={MDXComponents} />;
 }
