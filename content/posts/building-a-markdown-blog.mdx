@@ -1,0 +1,96 @@
+---
+title: How I built my blog
+date: "2025-09-13"
+---
+
+I've always wanted a place to write down what I'm learning, and at the same time, I've been curious about how MDX works. The idea of writing posts in Markdown but being able to sprinkle in custom React components felt like the perfect excuse to finally spin up a blog.
+
+In this post I'll break down how the first iteration of how my blog works so you can replicate it yourself.
+
+## The Stack
+- **NextJS** provides routing and support for MDX out of the box.
+- **MDX** is the main reason I started this—because I want to build posts that aren't just text but can include charts, demos, or interactive snippets.
+- **Github Pages** to provide a free and simple place to deploy to, which allows me to primarily focus on writing.
+
+## Getting Started
+
+#### Step 1: Create the project
+
+```bash
+npx create-next-app my-mdx-blog
+cd my-mdx-blog
+```
+
+This creates the NextJS project with all the boilerplate.
+
+#### Step 2: Add MDX
+
+Install the packages:
+
+```bash
+npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx next-mdx-remote
+```
+
+Update the `next.config.js`
+
+```ts
+import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
+
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+});
+
+const nextConfig: NextConfig = {
+  output: "export", // enables static export
+  images: {
+    unoptimized: true, // Github Pages cannot optimize images
+  },
+  experimental: {
+    mdxRs: false,
+  },
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+};
+
+export default withMDX(nextConfig);
+```
+
+Now Next.js will recognize .mdx files alongside normal pages.
+
+#### Step 3: Write a post in MDX
+
+Create the file `app/posts/hello-world.mdx`:
+
+```mdx
+---
+title: "Hello World"
+date: "2025-09-10"
+---
+
+# Hello World 👋
+
+This is my first post written in **MDX**.
+```
+
+That's the magic of MDX—content and interactivity in one place. Start your app using `npm run dev` and confirm that it works by visiting http://localhost:3000/posts/hello-world.
+
+#### Step 4: Deploy to GitHub Pages
+1. Push your code to a new GitHub repo.
+2. If your blog will live under a repo subpath, set basePath in next.config.js.
+3. Build and export your site:
+  ```bash
+  npm run build
+  npm run export
+  ```
+  This creates an out/ folder.
+  Deploy the out/ folder to GitHub Pages:
+  ```bash
+  npx gh-pages -d out
+  ```
+5. Enable GitHub Pages in your repo settings and point it to the gh-pages branch.
+
+Your blog should now be live.
+
+## Useful links:
+- https://nextjs.org/docs/app/guides/mdx
+- https://www.joshwcomeau.com/blog/how-i-built-my-blog/
